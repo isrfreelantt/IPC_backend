@@ -8,11 +8,11 @@ class Car(models.Model):
         return f"{self.brand} {self.model}"
 
 class Car_detail(models.Model):
-    model = models.IntegerField
+    model = models.IntegerField()
     submodel = models.CharField(max_length=30)
-    year = models.IntegerField
-    MIN_SUM_INSURED = models.IntegerField
-    MAX_SUM_INSURED = models.IntegerField
+    year = models.IntegerField()
+    MIN_SUM_INSURED = models.IntegerField()
+    MAX_SUM_INSURED = models.IntegerField()
 
     def __str__(self):
         return f"{self.model} {self.submodel} {self.year} {self.MIN_SUM_INSURED} {self.MAX_SUM_INSURED}"
@@ -29,22 +29,27 @@ class Coverage(models.Model):
     coverage_type = models.CharField(max_length=25)
     name = models.CharField(max_length=100)
     value = models.CharField(max_length=20)
-    campaign = models.IntegerField
+    campaign = models.IntegerField()
 
     def __str__(self):
         return f"{self.coverage_type} {self.name} {self.value} {self.campaign}"
 
-class Premiums(models.Model):
+class Premium(models.Model):
     sum_insured = models.CharField(max_length=25)
-    premium = models.IntegerField
-    campaign_id = models.IntegerField
+    premium = models.IntegerField()
+    campaign = models.IntegerField()
     age = models.CharField(max_length=5)
     deduct = models.CharField(max_length=100)
     garage = models.CharField(max_length=10)
 
 
     def __str__(self):
-        return f"{self.sum_insured} {self.premium} {self.campaign_id} {self.age} {self.deduct} {self.garage}"
+        return f"{self.sum_insured} {self.premium} {self.campaign} {self.age} {self.deduct} {self.garage}"
 
+class Premium_Car(models.Model):
+    model = models.SmallIntegerField()
+    premium = models.SmallIntegerField()
 
+    def __str__(self):
+        return f"{self.model} {self.premium}"
 
