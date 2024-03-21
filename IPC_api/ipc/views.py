@@ -1,6 +1,6 @@
 from rest_framework import generics
-from .models import Car, Car_detail, Campaign, Coverage, Premium, Premium_Car
-from .serializers import CarSerializer, Car_detailSerializer, CampaignSerializer, CoverageSerializer, PremiumSerializer, Premium_CarSerializer
+from .models import Car, Car_detail, Campaign, Coverage, Premiums
+from .serializers import CarSerializer, Car_detailSerializer, CampaignSerializer, CoverageSerializer, PremiumSerializer
 
 class CarList(generics.ListAPIView):
     queryset = Car.objects.all()
@@ -19,9 +19,6 @@ class CoverageList(generics.ListAPIView):
     serializer_class = CoverageSerializer
     
 class PremiumList(generics.ListAPIView):
-    queryset = Premium.objects.all()
+    queryset = Premiums.objects.all()
     serializer_class = PremiumSerializer
     
-class Premium_CarList(generics.ListAPIView):
-    queryset = Premium_Car.objects.all()
-    serializer_class = Premium_CarSerializer

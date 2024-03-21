@@ -34,22 +34,17 @@ class Coverage(models.Model):
     def __str__(self):
         return f"{self.coverage_type} {self.name} {self.value} {self.campaign}"
 
-class Premium(models.Model):
+class Premiums(models.Model):
     sum_insured = models.CharField(max_length=25)
-    premium = models.BigIntegerField
-    campaign = models.IntegerField
+    premium = models.IntegerField
+    campaign_id = models.IntegerField
     age = models.CharField(max_length=5)
-    deduct = models.IntegerField
+    deduct = models.CharField(max_length=100)
     garage = models.CharField(max_length=10)
 
 
     def __str__(self):
-        return f"{self.sum_insured} {self.premium} {self.campaign} {self.age} {self.deduct} {self.garage}"
+        return f"{self.sum_insured} {self.premium} {self.campaign_id} {self.age} {self.deduct} {self.garage}"
 
-class Premium_Car(models.Model):
-    model = models.IntegerField
-    premium = models.IntegerField
 
-    def __str__(self):
-        return f"{self.model} {self.premium}"
 
