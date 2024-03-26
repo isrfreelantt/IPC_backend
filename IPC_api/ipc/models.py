@@ -35,18 +35,18 @@ class Coverage(models.Model):
         return f"{self.coverage_type} {self.name} {self.value} {self.campaign}"
 
 class Premium(models.Model):
-    sum_insured = models.CharField(max_length=25)
+    min_sum_insured = models.IntegerField()
+    max_sum_insured = models.IntegerField()
     premium = models.IntegerField()
     campaign = models.IntegerField()
-    age = models.CharField(max_length=5)
+    min_age = models.SmallIntegerField()
+    max_age = models.SmallIntegerField()
     deduct = models.CharField(max_length=100)
     garage = models.CharField(max_length=10)
     cars = models.ManyToManyField('Car', through='Premium_Car', related_name='premium')
 
-
-
     def __str__(self):
-        return f"{self.sum_insured} {self.premium} {self.campaign} {self.age} {self.deduct} {self.garage}"
+        return f"{self.min_sum_insured} {self.max_sum_insured} {self.premium} {self.campaign} {self.min_age} {self.max_age} {self.deduct} {self.garage}"
 
 class Premium_Car(models.Model):
     model = models.ForeignKey(Car, on_delete=models.CASCADE, to_field='id')

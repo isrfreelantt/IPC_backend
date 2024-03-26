@@ -24,5 +24,5 @@ class CoverageSerializer(serializers.ModelSerializer):
 class PremiumSerializer(serializers.ModelSerializer):
     class Meta:
         model = Premium
-        fields = ['sum_insured', 'premium', 'campaign', 'age', 'deduct', 'garage']
+        fields = ['min_sum_insured', 'max_sum_insured', 'premium', 'campaign', 'min_age', 'max_age', 'deduct', 'garage']
 

@@ -1,5 +1,6 @@
 from rest_framework import generics
 from rest_framework.response import Response
+from django.db.models import Q
 from .models import Car, Car_detail, Campaign, Coverage, Premium
 from .serializers import CarSerializer, Car_detailSerializer, CampaignSerializer, CoverageSerializer, PremiumSerializer
 
@@ -38,12 +39,34 @@ class CarDetailList(generics.ListAPIView):
         return queryset
 
 class CampaignList(generics.ListAPIView):
-    queryset = Campaign.objects.all()
     serializer_class = CampaignSerializer
+
+    def get_queryset(self):
+        ids = self.request.query_params.get('id')
+
+        queryset = Campaign.objects.all()
+
+        if ids:
+            id_list = ids.split(',')  # Split id to list
+            queryset = queryset.filter(id__in=id_list)
+        
+        return queryset
+        
     
 class CoverageList(generics.ListAPIView):
-    queryset = Coverage.objects.all()
     serializer_class = CoverageSerializer
+
+    def get_queryset(self):
+        campaign = self.request.query_params.get('campaign_id')
+
+        queryset = Coverage.objects.all()
+
+        if campaign:
+            campaign_list = campaign.split(',')  # Split id to list
+            queryset = queryset.filter(campaign__in=campaign_list)
+        
+        return queryset
+
     
 class PremiumList(generics.ListAPIView):
     queryset = Premium.objects.all()
@@ -55,14 +78,20 @@ class PremiumByCar(generics.ListAPIView):
     def get_queryset(self):
         # Get the model_id from the URL query parameters
         model_id = self.request.query_params.get('model_id')
-        # year = self.request.query_params.get('year')
-
-        # if year:
-        #     queryset = queryset.filter(year=year)
+        age = self.request.query_params.get('age')
+        sum_Insured = self.request.query_params.get('sum_insured')
 
         # Retrieve Premium objects filtered by the specified model_id
+        queryset = Premium.objects.all()
+
+        if age:
+            queryset = queryset.filter(min_age__lte=age, max_age__gte=age)
+        
+        if sum_Insured:
+            queryset = queryset.filter(min_sum_insured__lte=sum_Insured, max_sum_insured__gte=sum_Insured)
+
         if model_id is not None:
-            premium_queryset = Premium.objects.filter(cars__id=model_id)
+            premium_queryset = queryset.filter(cars__id=model_id)
             return premium_queryset
         else:
             # Handle case where model_id is not provided
