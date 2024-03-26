@@ -33,10 +33,10 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('model', models.IntegerField()),
-                ('submodel', models.CharField(max_length=30)),
+                ('sub_model', models.CharField(max_length=30)),
                 ('year', models.IntegerField()),
-                ('MIN_SUM_INSURED', models.IntegerField()),
-                ('MAX_SUM_INSURED', models.IntegerField()),
+                ('min_sum_insured', models.IntegerField()),
+                ('max_sum_insured', models.IntegerField()),
             ],
         ),
         migrations.CreateModel(

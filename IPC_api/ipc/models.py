@@ -9,13 +9,13 @@ class Car(models.Model):
 
 class Car_detail(models.Model):
     model = models.IntegerField()
-    submodel = models.CharField(max_length=30)
+    sub_model = models.CharField(max_length=30)
     year = models.IntegerField()
-    MIN_SUM_INSURED = models.IntegerField()
-    MAX_SUM_INSURED = models.IntegerField()
+    min_sum_insured = models.IntegerField()
+    max_sum_insured = models.IntegerField()
 
     def __str__(self):
-        return f"{self.model} {self.submodel} {self.year} {self.MIN_SUM_INSURED} {self.MAX_SUM_INSURED}"
+        return f"{self.model} {self.sub_model} {self.year} {self.min_sum_insured} {self.max_sum_insured}"
 
 class Campaign(models.Model):
     insurance_type = models.CharField(max_length=10)
@@ -41,15 +41,16 @@ class Premium(models.Model):
     age = models.CharField(max_length=5)
     deduct = models.CharField(max_length=100)
     garage = models.CharField(max_length=10)
+    cars = models.ManyToManyField('Car', through='Premium_Car', related_name='premium')
+
 
 
     def __str__(self):
         return f"{self.sum_insured} {self.premium} {self.campaign} {self.age} {self.deduct} {self.garage}"
 
 class Premium_Car(models.Model):
-    model = models.SmallIntegerField()
-    premium = models.SmallIntegerField()
+    model = models.ForeignKey(Car, on_delete=models.CASCADE, to_field='id')
+    premium = models.ForeignKey(Premium, on_delete=models.CASCADE, to_field='id')
 
     def __str__(self):
         return f"{self.model} {self.premium}"
-
