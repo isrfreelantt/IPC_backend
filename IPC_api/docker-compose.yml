@@ -4,5 +4,3 @@ services:
   django:
     image: ipc:0.1
     build: .
-    ports:
-      - "8000:8000"
