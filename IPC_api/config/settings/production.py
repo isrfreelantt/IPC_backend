@@ -1,7 +1,7 @@
 import os
 
 from config.logging import *
-from config.setting.base import *
+from config.settings.base import *
 from dotenv import load_dotenv
 
 load_dotenv(Path.joinpath(BASE_DIR, '.env'))
