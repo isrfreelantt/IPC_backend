@@ -1,6 +1,5 @@
 from rest_framework import generics
 from rest_framework.response import Response
-from django.db.models import Q
 from .models import Car, Car_detail, Campaign, Coverage, Premium
 from .serializers import CarSerializer, Car_detailSerializer, CampaignSerializer, CoverageSerializer, PremiumSerializer
 
