@@ -14,4 +14,4 @@ RUN pip install -r requirements.txt
 
 EXPOSE 8000
 
-CMD ["entrypoint.sh"]
+CMD ["/app/entrypoint.sh"]
