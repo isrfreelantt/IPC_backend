@@ -9,5 +9,7 @@ urlpatterns = [
     path('campaign/', views.CampaignList.as_view(), name='campaign-list'),
     path('coverage/', views.CoverageList.as_view(), name='coverage-list'),
     path('premiums/', views.PremiumByCar.as_view(), name='premium-by-car'),
+    path('cars-owned/', views.CarOwnedListCreate.as_view(), name='car-owned-list-create'),
+    path('customer/', views.CustomerListCreate.as_view(), name='customer-list-create'),
 
 ]

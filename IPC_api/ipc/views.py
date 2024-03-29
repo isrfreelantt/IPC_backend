@@ -1,7 +1,7 @@
 from rest_framework import generics
 from rest_framework.response import Response
-from .models import Car, Car_detail, Campaign, Coverage, Premium
-from .serializers import CarSerializer, Car_detailSerializer, CampaignSerializer, CoverageSerializer, PremiumSerializer
+from .models import Car, Car_detail, Campaign, Coverage, Premium, Car_Owned, Customer
+from .serializers import CarSerializer, Car_detailSerializer, CampaignSerializer, CoverageSerializer, PremiumSerializer, CarOwnedSerializer, CustomerSerializer
 
 class CarList(generics.ListAPIView):
     queryset = Car.objects.all()
@@ -66,7 +66,6 @@ class CoverageList(generics.ListAPIView):
         
         return queryset
 
-    
 class PremiumList(generics.ListAPIView):
     queryset = Premium.objects.all()
     serializer_class = PremiumSerializer
@@ -95,3 +94,11 @@ class PremiumByCar(generics.ListAPIView):
         else:
             # Handle case where model_id is not provided
             return Premium.objects.none()
+
+class CarOwnedListCreate(generics.ListCreateAPIView):
+    queryset = Car_Owned.objects.all()
+    serializer_class = CarOwnedSerializer
+
+class CustomerListCreate(generics.ListCreateAPIView):
+    queryset = Customer.objects.all()
+    serializer_class = CustomerSerializer

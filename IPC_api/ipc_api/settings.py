@@ -1,5 +1,8 @@
 from pathlib import Path
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -14,7 +17,7 @@ SECRET_KEY = 'django-insecure-9wi7_f0yl)13j$@=ai+0ox%v$kut*_m#pwam7n*=$^c-a=f%i(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['quick-brake-production.up.railway.app']
+ALLOWED_HOSTS = ['quick-brake-production.up.railway.app', '127.0.0.1']
 
 
 # Application definition
@@ -60,6 +63,14 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ipc_api.wsgi.application'
 
+REST_FRAMEWORK = {
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.UserRateThrottle',
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'user': '100/day',  # 100 requests per day per user
+    }
+}
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases

@@ -1,4 +1,5 @@
 from django.db import models
+from phone_field import PhoneField
 
 class Car(models.Model):
     brand = models.CharField(max_length=20)
@@ -35,12 +36,12 @@ class Coverage(models.Model):
         return f"{self.coverage_type} {self.name} {self.value} {self.campaign}"
 
 class Premium(models.Model):
-    min_sum_insured = models.IntegerField()
-    max_sum_insured = models.IntegerField()
+    min_sum_insured = models.IntegerField(null=True)
+    max_sum_insured = models.IntegerField(null=True)
     premium = models.IntegerField()
     campaign = models.IntegerField()
-    min_age = models.SmallIntegerField()
-    max_age = models.SmallIntegerField()
+    min_age = models.SmallIntegerField(null=True)
+    max_age = models.SmallIntegerField(null=True)
     deduct = models.CharField(max_length=100)
     garage = models.CharField(max_length=10)
     cars = models.ManyToManyField('Car', through='Premium_Car', related_name='premium')
@@ -54,3 +55,29 @@ class Premium_Car(models.Model):
 
     def __str__(self):
         return f"{self.model} {self.premium}"
+    
+class Province(models.Model):
+    province = models.CharField(max_length=30)
+
+    def __str__(self):
+        return f"{self.province}"
+
+class Car_Owned(models.Model):
+    brand = models.CharField(max_length=20)
+    model = models.IntegerField()
+    submodel = models.IntegerField
+    province = models.IntegerField()
+    year = models.IntegerField()
+
+    def __str__(self):
+        return f"{self.brand} {self.model} {self.submodel} {self.province} {self.year}"
+    
+class Customer(models.Model):
+    name = models.CharField(max_length=40)
+    surname = models.CharField(max_length=40)
+    tel = PhoneField()
+    email = models.EmailField()
+    car_owned = models.ForeignKey(Car_Owned, on_delete=models.CASCADE, to_field='id')
+
+    def __str__(self):
+        return f"{self.name} {self.surname} {self.tel} {self.email} {self.car_owned}"

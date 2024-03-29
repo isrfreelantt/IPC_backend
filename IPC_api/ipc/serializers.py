@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Car, Car_detail, Campaign, Coverage, Premium
+from .models import Car, Car_detail, Campaign, Coverage, Premium, Car_Owned, Customer
 
 class CarSerializer(serializers.ModelSerializer):
     class Meta:
@@ -26,3 +26,12 @@ class PremiumSerializer(serializers.ModelSerializer):
         model = Premium
         fields = ['min_sum_insured', 'max_sum_insured', 'premium', 'campaign', 'min_age', 'max_age', 'deduct', 'garage']
 
+class CarOwnedSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Car_Owned
+        fields = '__all__'
+
+class CustomerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Customer
+        fields = '__all__'

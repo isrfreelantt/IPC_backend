@@ -15,8 +15,8 @@ class Migration(migrations.Migration):
             name='Premium_Car',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('model_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='ipc.car')),
-                ('premium_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='ipc.premium')),
+                ('model', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='ipc.car')),
+                ('premium', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='ipc.premium')),
             ],
         ),
     ]
