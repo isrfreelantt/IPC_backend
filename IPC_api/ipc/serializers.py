@@ -11,14 +11,14 @@ class Car_detailSerializer(serializers.ModelSerializer):
         model = Car_detail
         fields = '__all__'
 
-class CampaignSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Campaign
-        fields = '__all__'
-
 class CoverageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Coverage
+        fields = '__all__'
+
+class CampaignSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Campaign
         fields = '__all__'
 
 class PremiumSerializer(serializers.ModelSerializer):

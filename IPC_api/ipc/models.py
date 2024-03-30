@@ -30,7 +30,7 @@ class Coverage(models.Model):
     coverage_type = models.CharField(max_length=25)
     name = models.CharField(max_length=100)
     value = models.CharField(max_length=20)
-    campaign = models.IntegerField()
+    campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE, to_field='id')
 
     def __str__(self):
         return f"{self.coverage_type} {self.name} {self.value} {self.campaign}"
@@ -39,7 +39,7 @@ class Premium(models.Model):
     min_sum_insured = models.IntegerField(null=True)
     max_sum_insured = models.IntegerField(null=True)
     premium = models.IntegerField()
-    campaign = models.IntegerField()
+    campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE, to_field='id')
     min_age = models.SmallIntegerField(null=True)
     max_age = models.SmallIntegerField(null=True)
     deduct = models.CharField(max_length=100)

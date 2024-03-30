@@ -50,7 +50,6 @@ class CampaignList(generics.ListAPIView):
             queryset = queryset.filter(id__in=id_list)
         
         return queryset
-        
     
 class CoverageList(generics.ListAPIView):
     serializer_class = CoverageSerializer
