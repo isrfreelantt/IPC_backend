@@ -1,7 +1,7 @@
 from rest_framework import generics
 from rest_framework.response import Response
-from .models import Car, Car_detail, Campaign, Coverage, Premium, Car_Owned, Customer
-from .serializers import CarSerializer, Car_detailSerializer, CampaignSerializer, CoverageSerializer, PremiumSerializer, CarOwnedSerializer, CustomerSerializer
+from .models import *
+from .serializers import *
 
 class CarList(generics.ListAPIView):
     queryset = Car.objects.all()
@@ -102,3 +102,7 @@ class CarOwnedListCreate(generics.ListCreateAPIView):
 class CustomerListCreate(generics.ListCreateAPIView):
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
+
+class ProvinceList(generics.ListAPIView):
+    queryset = Province.objects.all()
+    serializer_class = ProvinceSerializer
