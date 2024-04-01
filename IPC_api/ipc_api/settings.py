@@ -68,7 +68,7 @@ REST_FRAMEWORK = {
         'rest_framework.throttling.UserRateThrottle',
     ],
     'DEFAULT_THROTTLE_RATES': {
-        'user': '100/day',  # 100 requests per day per user
+        'user': '300/day',  # 300 requests per day per user
     }
 }
 
