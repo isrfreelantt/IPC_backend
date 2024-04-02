@@ -4,15 +4,23 @@ from .models import *
 from .serializers import *
 
 class CarList(generics.ListAPIView):
-    queryset = Car.objects.all()
-    serializer_class = CarSerializer
-
-class CarsByBrand(generics.ListAPIView):
     serializer_class = CarSerializer
 
     def get_queryset(self):
-        brand = self.kwargs['brand']  # Retrieve name from URL
-        return Car.objects.filter(brand=brand)
+        queryset = Car.objects.all()
+        brand = self.request.query_params.get('brand')
+        year = self.request.query_params.get('year')
+
+        queryset = Car.objects.all()
+
+        if brand:
+            queryset = queryset.filter(brand=brand)
+        
+        if year:
+            queryset = queryset.filter(min_year__lte=year, max_year__gte=year)      
+
+        return queryset
+
 
 class UniqueBrand(generics.ListAPIView):
     def list(self, request, *args, **kwargs):
