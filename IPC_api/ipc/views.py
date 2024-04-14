@@ -55,10 +55,10 @@ class CampaignList(generics.ListAPIView):
 
         if ids:
             id_list = ids.split(',')  # Split id to list
-            queryset = queryset.filter(id__in=id_list)
+            queryset = Campaign.objects.filter(pk__in=id_list)
         
         return queryset
-    
+
 class CoverageList(generics.ListAPIView):
     serializer_class = CoverageSerializer
 

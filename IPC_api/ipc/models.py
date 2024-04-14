@@ -32,7 +32,7 @@ class Coverage(models.Model):
     coverage_type = models.CharField(max_length=25)
     name = models.CharField(max_length=100)
     value = models.CharField(max_length=20)
-    campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE, to_field='id')
+    campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE, to_field='id', related_name='coverages')
 
     def __str__(self):
         return f"{self.coverage_type} {self.name} {self.value} {self.campaign}"

@@ -2,3 +2,4 @@
 /env
 /env
 IPC_api/.env
+*.pyc
