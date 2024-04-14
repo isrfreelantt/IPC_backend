@@ -66,8 +66,8 @@ class Province(models.Model):
 
 class Car_Owned(models.Model):
     brand = models.CharField(max_length=20)
-    model = models.IntegerField()
-    submodel = models.IntegerField
+    model = models.CharField(max_length=30)
+    submodel = models.CharField(max_length=30)
     province = models.IntegerField()
     year = models.IntegerField()
 

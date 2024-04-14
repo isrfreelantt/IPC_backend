@@ -11,5 +11,4 @@ urlpatterns = [
     path('cars-owned/', views.CarOwnedListCreate.as_view(), name='car-owned-list-create'),
     path('customer/', views.CustomerListCreate.as_view(), name='customer-list-create'),
     path('province/', views.ProvinceList.as_view(), name='province-list'),
-
 ]
