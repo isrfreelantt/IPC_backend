@@ -17,9 +17,11 @@ class CoverageSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class CampaignSerializer(serializers.ModelSerializer):
+    coverages = CoverageSerializer(many=True, read_only=True)
+
     class Meta:
         model = Campaign
-        fields = '__all__'
+        fields = ['id', 'insurance_type', 'name', 'company', 'coverages']
 
 class PremiumSerializer(serializers.ModelSerializer):
     class Meta:
