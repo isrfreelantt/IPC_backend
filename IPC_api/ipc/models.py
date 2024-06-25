@@ -2,13 +2,14 @@ from django.db import models
 from phone_field import PhoneField
 
 class Car(models.Model):
-    brand = models.CharField(max_length=20)
+    brandcode = models.CharField(max_length=4)
+    model = models.CharField(max_length=20)
     model = models.CharField(max_length=30)
     min_year = models.IntegerField(null=True)
     max_year = models.IntegerField(null=True)
 
     def __str__(self):
-        return f"{self.brand} {self.model} {self.min_year} {self.max_year}"
+        return f"{self.brandcode} {self.modelcode} {self.model} {self.min_year} {self.max_year}"
 
 class Car_detail(models.Model):
     model = models.IntegerField()
