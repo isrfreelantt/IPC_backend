@@ -14,7 +14,7 @@ class CarList(generics.ListAPIView):
         queryset = Car.objects.all()
 
         if brand:
-            queryset = queryset.filter(brand=brand)
+            queryset = queryset.filter(brandcode=brand)
         
         if year:
             queryset = queryset.filter(min_year__lte=year, max_year__gte=year)      
