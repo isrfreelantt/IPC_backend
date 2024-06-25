@@ -1,9 +1,16 @@
 from django.db import models
 from phone_field import PhoneField
 
+class Brand(models.Model):
+    brandcode = models.CharField(4)
+    brand = models.CharField(max_length=20)
+
+    def __str__(self):
+        return f"{self.brandcode} {self.brand}"
+
 class Car(models.Model):
-    brandcode = models.CharField(max_length=4)
-    model = models.CharField(max_length=20)
+    brandcode = models.CharField(4)
+    modelcode = models.CharField(max_length=20)
     model = models.CharField(max_length=30)
     min_year = models.IntegerField(null=True)
     max_year = models.IntegerField(null=True)
