@@ -23,8 +23,8 @@ class CarList(generics.ListAPIView):
 
 
 class UniqueBrand(generics.ListAPIView):
-    def list(self, request, *args, **kwargs):
-        queryset = Brand.objects.order_by('brand').distinct('brand').values_list('brand', flat=True)
+    def get_queryset(self):
+        queryset = Brand.objects.all()
         return Response(queryset)
     
 class CarDetailList(generics.ListAPIView):
