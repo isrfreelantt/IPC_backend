@@ -25,9 +25,9 @@ class TokenManager:
         self.token_expiry = 0
         self.headers = {
             "Authorization": f"Bearer {self.get_token()}",
-            "X-Authorization": os.getenv('X-Authorization'),
-            "Ocp-Apim-Subscription-Key": "1198-KvOXyPSopJqLf1Re2alCkMS90+FUfGxeh1oQ3sRLrDY=",
-            "apiVersion": os.getenv('API_VERSION')
+            "X-Authorization": "1198-KvOXyPSopJqLf1Re2alCkMS90+FUfGxeh1oQ3sRLrDY=.",
+            "Ocp-Apim-Subscription-Key": "cae4a8cdb9d14a5ab3833d39d426fbca",
+            "apiVersion": 1
         }
 
     def get_bearer_token(self):
