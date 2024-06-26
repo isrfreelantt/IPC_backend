@@ -2,6 +2,10 @@ from rest_framework import generics
 from rest_framework.response import Response
 from .models import *
 from .serializers import *
+from rest_framework.views import APIView
+from rest_framework import status
+from .token_manager import TokenManager
+
 
 class CarList(generics.ListAPIView):
     serializer_class = CarSerializer
@@ -21,29 +25,30 @@ class CarList(generics.ListAPIView):
 
         return queryset
 
-
-class UniqueBrand(generics.ListAPIView):
-    def get_queryset(self):
-        queryset = Brand.objects.all()
-        return Response(queryset)
+class BrandList(generics.ListAPIView):
+    queryset = Brand.objects.all()
+    serializer_class = BrandSerializer
     
-class CarDetailList(generics.ListAPIView):
-    serializer_class = Car_detailSerializer
+class CarSpecList(APIView):
+    def get(self, request):
+        # Extract query parameters
+        brand_code = request.query_params.get('brand')
+        model_code = request.query_params.get('model')
+        model_year = request.query_params.get('year')
 
-    def get_queryset(self):
-        queryset = Car_detail.objects.all()
-        year = self.request.query_params.get('year')
-        model = self.request.query_params.get('model')
+        # Ensure all required parameters are provided
+        if not brand_code or not model_code or not model_year:
+            return Response({"error": "Missing required query parameters"}, status=status.HTTP_400_BAD_REQUEST)
 
-        queryset = Car_detail.objects.all()
+        # Initialize the TokenManager
+        token_manager = TokenManager()
 
-        if year:
-            queryset = queryset.filter(year=year)
-        
-        if model:
-            queryset = queryset.filter(model=model)
-        
-        return queryset
+        try:
+            # Fetch vehicle specs using the TokenManager
+            vehicle_specs = token_manager.get_vehicle_specs(brand_code, model_code, model_year)
+            return Response(vehicle_specs, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class CampaignList(generics.ListAPIView):
     serializer_class = CampaignSerializer
