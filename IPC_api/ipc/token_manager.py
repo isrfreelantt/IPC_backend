@@ -26,7 +26,7 @@ class TokenManager:
         self.headers = {
             "Authorization": f"Bearer {self.get_token()}",
             "X-Authorization": os.getenv('X-Authorization'),
-            "Ocp-Apim-Subscription-Key": os.getenv('Ocp-Apim-Subscription-Key'),
+            "Ocp-Apim-Subscription-Key": "1198-KvOXyPSopJqLf1Re2alCkMS90+FUfGxeh1oQ3sRLrDY=",
             "apiVersion": os.getenv('API_VERSION')
         }
 
