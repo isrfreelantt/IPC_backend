@@ -23,12 +23,6 @@ class TokenManager:
         }
         self.token = None
         self.token_expiry = 0
-        self.headers = {
-            "Authorization": f"Bearer {self.get_token()}",
-            "X-Authorization": "1198-KvOXyPSopJqLf1Re2alCkMS90+FUfGxeh1oQ3sRLrDY=.",
-            "Ocp-Apim-Subscription-Key": "cae4a8cdb9d14a5ab3833d39d426fbca",
-            "apiVersion": "1"
-        }
 
     def get_bearer_token(self):
         # Make the POST request to get a new token
@@ -55,6 +49,14 @@ class TokenManager:
 
         # Define the endpoint and parameters
         endpoint = f"{self.domain}{self.base_url}vehicle/specs"
+
+        headers = {
+            "Authorization": f"Bearer {self.get_token()}",
+            "X-Authorization": os.getenv('X-Authorization'),
+            "Ocp-Apim-Subscription-Key": os.getenv('Ocp-Apim-Subscription-Key'),
+            "apiVersion": os.getenv('API_VERSION')
+        }
+        
         params = {
             "BrandCode": brand_code,
             "ModelCode": model_code,
@@ -62,7 +64,7 @@ class TokenManager:
         }
 
         # Make the GET request
-        response = requests.get(endpoint, headers=self.headers, params=params)
+        response = requests.get(endpoint, headers=headers, params=params)
 
         # Check if the request was successful
         if response.status_code == 200:
