@@ -63,6 +63,7 @@ class TokenManager:
             "ModelYear": model_year
         }
 
+        print(os.getenv('X-Authorization'), os.getenv('Ocp-Apim-Subscription-Key'), os.getenv('API_VERSION'))
         # Make the GET request
         response = requests.get(endpoint, headers=headers, params=params)
 
