@@ -46,14 +46,15 @@ class TokenManager:
         return self.token
 
     def get_vehicle_specs(self, brand_code, model_code, model_year):
+        token = self.get_token()
 
         # Define the endpoint and parameters
         endpoint = f"{self.domain}{self.base_url}vehicle/specs"
 
         headers = {
-            "Authorization": f"Bearer {self.get_token()}",
-            "X-Authorization": os.getenv('X-Authorization'),
-            "Ocp-Apim-Subscription-Key": os.getenv('Ocp-Apim-Subscription-Key'),
+            "Authorization": f"Bearer {token}",
+            "X-Authorization": os.getenv('X_Authorization'),
+            "Ocp-Apim-Subscription-Key": os.getenv('Ocp_Apim_Subscription_Key'),
             "apiVersion": os.getenv('API_VERSION')
         }
         
@@ -72,7 +73,7 @@ class TokenManager:
             response_data = response.json().get("CarSpecs", [])
             return response_data
         else:
-            raise Exception(f"Failed to get vehicle specs: {os.getenv('X-Authorization'), os.getenv('Ocp-Apim-Subscription-Key'), os.getenv('API_VERSION')}")
+            raise Exception(f"Failed to get vehicle specs: {response.status_code}, {response.text}")
 
 # Usage
 token_manager = TokenManager()
