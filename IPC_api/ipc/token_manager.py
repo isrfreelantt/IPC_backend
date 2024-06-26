@@ -63,7 +63,7 @@ class TokenManager:
             "ModelYear": model_year
         }
 
-        print(os.getenv('X-Authorization'), os.getenv('Ocp-Apim-Subscription-Key'), os.getenv('API_VERSION'))
+        print()
         # Make the GET request
         response = requests.get(endpoint, headers=headers, params=params)
 
@@ -72,7 +72,7 @@ class TokenManager:
             response_data = response.json().get("CarSpecs", [])
             return response_data
         else:
-            raise Exception(f"Failed to get vehicle specs: {response.status_code}, {response.text}")
+            raise Exception(f"Failed to get vehicle specs: {os.getenv('X-Authorization'), os.getenv('Ocp-Apim-Subscription-Key'), os.getenv('API_VERSION')}")
 
 # Usage
 token_manager = TokenManager()
