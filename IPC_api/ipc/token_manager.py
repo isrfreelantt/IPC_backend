@@ -27,7 +27,7 @@ class TokenManager:
             "Authorization": f"Bearer {self.get_token()}",
             "X-Authorization": "1198-KvOXyPSopJqLf1Re2alCkMS90+FUfGxeh1oQ3sRLrDY=.",
             "Ocp-Apim-Subscription-Key": "cae4a8cdb9d14a5ab3833d39d426fbca",
-            "apiVersion": 1
+            "apiVersion": "1"
         }
 
     def get_bearer_token(self):
