@@ -4,8 +4,7 @@ from .models import *
 from .serializers import *
 from rest_framework.views import APIView
 from rest_framework import status
-from .token_manager import TokenManager
-
+from .data_manager import DataManager
 
 class CarList(generics.ListAPIView):
     serializer_class = CarSerializer
@@ -41,11 +40,10 @@ class CarSpecList(APIView):
             return Response({"error": "Missing required query parameters"}, status=status.HTTP_400_BAD_REQUEST)
 
         # Initialize the TokenManager
-        token_manager = TokenManager()
+        data_manager = DataManager()
 
         try:
-            # Fetch vehicle specs using the TokenManager
-            vehicle_specs = token_manager.get_vehicle_specs(brand_code, model_code, model_year)
+            vehicle_specs = data_manager.extract_car_specs(brand_code, model_code, model_year)
             return Response(vehicle_specs, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

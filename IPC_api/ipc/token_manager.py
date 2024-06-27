@@ -74,6 +74,3 @@ class TokenManager:
             return response_data
         else:
             raise Exception(f"Failed to get vehicle specs: {response.status_code}, {response.text}")
-
-# Usage
-token_manager = TokenManager()
