@@ -1,4 +1,4 @@
-from token_manager import TokenManager
+from .token_manager import TokenManager
 
 class DataManager:
     @staticmethod
@@ -18,6 +18,3 @@ class DataManager:
                 "MaxSumInsure": spec["MaxSumInsure"],
             })
         return selected_fields
-
-# Usage
-data_manager = DataManager()
