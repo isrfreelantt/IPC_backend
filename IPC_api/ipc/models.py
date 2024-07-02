@@ -28,28 +28,28 @@ class Car_detail(models.Model):
     def __str__(self):
         return f"{self.model} {self.sub_model} {self.year} {self.min_sum_insured} {self.max_sum_insured}"
 
-class Campaign(models.Model):
-    insurance_type = models.CharField(max_length=10)
+class Package(models.Model):
+    package_type = models.CharField(max_length=10)
     name = models.CharField(max_length=30)
     company = models.CharField(max_length=20)
 
     def __str__(self):
-        return f"{self.insurance_type} {self.name} {self.company}"
-    
+        return f"{self.package_type} {self.name} {self.company}"
+
 class Coverage(models.Model):
     coverage_type = models.CharField(max_length=25)
     name = models.CharField(max_length=100)
     value = models.CharField(max_length=20)
-    campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE, to_field='id', related_name='coverages')
+    package = models.ForeignKey(Package, on_delete=models.CASCADE, to_field='id', related_name='coverages')
 
     def __str__(self):
-        return f"{self.coverage_type} {self.name} {self.value} {self.campaign}"
+        return f"{self.coverage_type} {self.name} {self.value} {self.package}"
 
 class Premium(models.Model):
     min_sum_insured = models.IntegerField(null=True)
     max_sum_insured = models.IntegerField(null=True)
     premium = models.IntegerField()
-    campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE, to_field='id')
+    package = models.ForeignKey(Package, on_delete=models.CASCADE, to_field='id', related_name='premiums')
     min_age = models.SmallIntegerField(null=True)
     max_age = models.SmallIntegerField(null=True)
     deduct = models.CharField(max_length=100)
@@ -57,7 +57,8 @@ class Premium(models.Model):
     cars = models.ManyToManyField('Car', through='Premium_Car', related_name='premium')
 
     def __str__(self):
-        return f"{self.min_sum_insured} {self.max_sum_insured} {self.premium} {self.campaign} {self.min_age} {self.max_age} {self.deduct} {self.garage}"
+        return f"{self.min_sum_insured} {self.max_sum_insured} {self.premium} {self.package} {self.min_age} {self.max_age} {self.deduct} {self.garage}"
+
 
 class Premium_Car(models.Model):
     model = models.ForeignKey(Car, on_delete=models.CASCADE, to_field='id')
@@ -73,10 +74,10 @@ class Province(models.Model):
         return f"{self.province}"
 
 class Car_Owned(models.Model):
-    brand = models.CharField(max_length=20)
+    brand = models.ForeignKey(Brand, on_delete=models.CASCADE, to_field='id')
     model = models.CharField(max_length=30)
     submodel = models.CharField(max_length=30)
-    province = models.IntegerField()
+    province = models.ForeignKey(Province, on_delete=models.CASCADE, to_field='id')
     year = models.IntegerField()
 
     def __str__(self):

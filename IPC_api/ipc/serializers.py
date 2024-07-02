@@ -21,17 +21,19 @@ class CoverageSerializer(serializers.ModelSerializer):
         model = Coverage
         fields = '__all__'
 
-class CampaignSerializer(serializers.ModelSerializer):
+class PackageSerializer(serializers.ModelSerializer):
     coverages = CoverageSerializer(many=True, read_only=True)
 
     class Meta:
-        model = Campaign
-        fields = ['id', 'insurance_type', 'name', 'company', 'coverages']
+        model = Package
+        fields = ['id', 'package_type', 'name', 'company', 'coverages']
 
 class PremiumSerializer(serializers.ModelSerializer):
+    package = PackageSerializer(read_only=True)
+
     class Meta:
         model = Premium
-        fields = ['min_sum_insured', 'max_sum_insured', 'premium', 'campaign', 'min_age', 'max_age', 'deduct', 'garage']
+        fields = ['package', 'min_sum_insured', 'max_sum_insured', 'premium', 'deduct', 'garage']
 
 class CarOwnedSerializer(serializers.ModelSerializer):
     class Meta:

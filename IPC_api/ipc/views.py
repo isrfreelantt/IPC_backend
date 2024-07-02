@@ -1,9 +1,9 @@
-from rest_framework import generics
+from rest_framework import generics, status
 from rest_framework.response import Response
+from rest_framework.views import APIView
+from django.utils import timezone
 from .models import *
 from .serializers import *
-from rest_framework.views import APIView
-from rest_framework import status
 from .data_manager import DataManager
 
 class CarList(generics.ListAPIView):
@@ -48,17 +48,17 @@ class CarSpecList(APIView):
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-class CampaignList(generics.ListAPIView):
-    serializer_class = CampaignSerializer
+class PackageList(generics.ListAPIView):
+    serializer_class = PackageSerializer
 
     def get_queryset(self):
         ids = self.request.query_params.get('id')
 
-        queryset = Campaign.objects.all()
+        queryset = Package.objects.all()
 
         if ids:
             id_list = ids.split(',')  # Split id to list
-            queryset = Campaign.objects.filter(pk__in=id_list)
+            queryset = Package.objects.filter(pk__in=id_list)
         
         return queryset
 
@@ -66,13 +66,13 @@ class CoverageList(generics.ListAPIView):
     serializer_class = CoverageSerializer
 
     def get_queryset(self):
-        campaign = self.request.query_params.get('campaign_id')
+        package = self.request.query_params.get('package_id')
 
         queryset = Coverage.objects.all()
 
-        if campaign:
-            campaign_list = campaign.split(',')  # Split id to list
-            queryset = queryset.filter(campaign__in=campaign_list)
+        if package:
+            package_list = package.split(',')  # Split id to list
+            queryset = queryset.filter(package__in=package_list)
         
         return queryset
 
@@ -86,20 +86,32 @@ class PremiumByCar(generics.ListAPIView):
     def get_queryset(self):
         # Get the model_id from the URL query parameters
         model_id = self.request.query_params.get('model_id')
-        age = self.request.query_params.get('age')
-        sum_Insured = self.request.query_params.get('sum_insured')
+        year = self.request.query_params.get('year')
+        sum_insured = self.request.query_params.get('sum_insured')
 
         # Retrieve Premium objects filtered by the specified model_id
         queryset = Premium.objects.all()
 
-        if age:
-            queryset = queryset.filter(min_age__lte=age, max_age__gte=age)
+        # Filter by age
+        if year:
+            try:
+                # Calculate age by dynamic current year
+                age = timezone.now().year - int(year)
+                queryset = queryset.filter(min_age__lte=age, max_age__gte=age)
+            except ValueError:
+                pass  # Handle the case where year is not a valid integer
         
-        if sum_Insured:
-            queryset = queryset.filter(min_sum_insured__lte=sum_Insured, max_sum_insured__gte=sum_Insured)
+        # Filter by sum insured
+        if sum_insured:
+            try:
+                sum_insured = int(sum_insured)
+                queryset = queryset.filter(min_sum_insured__lte=sum_insured, max_sum_insured__gte=sum_insured)
+            except ValueError:
+                pass  # Handle the case where sum_insured is not a valid integer
 
-        if model_id is not None:
-            premium_queryset = queryset.filter(cars__id=model_id)
+        # Filter by model_id
+        if model_id:
+            premium_queryset = queryset.filter(cars=model_id)
             return premium_queryset
         else:
             # Handle case where model_id is not provided
