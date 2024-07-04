@@ -39,7 +39,7 @@ class CarSpecList(APIView):
         if not brand_code or not model_code or not model_year:
             return Response({"error": "Missing required query parameters"}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Initialize the TokenManager
+        # Initialize the DataManager
         data_manager = DataManager()
 
         try:
@@ -112,10 +112,65 @@ class PremiumByCar(generics.ListAPIView):
         # Filter by model_id
         if model_id:
             premium_queryset = queryset.filter(cars=model_id)
+            print(premium_queryset)
+
             return premium_queryset
         else:
             # Handle case where model_id is not provided
             return Premium.objects.none()
+        
+class CombinedPremium(generics.ListAPIView):
+    serializer_class = PremiumSerializer
+
+    def get(self, request, *args, **kwargs):
+        model_id = request.query_params.get('model_id')
+        year = request.query_params.get('year')
+        sum_insured = request.query_params.get('sum_insured')
+        package_type = request.query_params.get('package_type')
+        voluntary_code = request.query_params.get('voluntary_code')
+        vehicle_key = request.query_params.get('vehicle_key')
+        province = request.query_params.get('province')
+
+        queryset = Premium.objects.all()
+
+        if year:
+            try:
+                age = timezone.now().year - int(year)
+                queryset = queryset.filter(min_age__lte=age, max_age__gte=age)
+            except ValueError:
+                pass
+
+        if sum_insured:
+            try:
+                sum_insured = int(sum_insured)
+                queryset = queryset.filter(min_sum_insured__lte=sum_insured, max_sum_insured__gte=sum_insured)
+            except ValueError:
+                pass
+
+        if model_id:
+            premium_queryset = queryset.filter(cars=model_id)
+            # Initialize DataManager
+            data_manager = DataManager()
+            
+            # Fetch the package data
+            try:
+                extracted_package = data_manager.extract_package(package_type, voluntary_code, vehicle_key, province)
+            except Exception as e:
+                return Response({"error": str(e)}, status=500)
+
+            # Serialize premium data
+            premium_data = PremiumSerializer(premium_queryset, many=True).data
+
+            # Combine the data
+            combined_data = {
+                "Database_package": premium_data,
+                "API_package": extracted_package
+            }
+
+            return Response(combined_data)
+        else:
+            # Handle case where model_id is not provided
+            return Response({"error": "model_id is required"}, status=400)
 
 class CarOwnedListCreate(generics.ListCreateAPIView):
     queryset = Car_Owned.objects.all()

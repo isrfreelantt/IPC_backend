@@ -68,10 +68,11 @@ class Premium_Car(models.Model):
         return f"{self.model} {self.premium}"
     
 class Province(models.Model):
-    province = models.CharField(max_length=30)
+    province_th = models.CharField(max_length=30)
+    province_en = models.CharField(max_length=30)
 
     def __str__(self):
-        return f"{self.province}"
+        return f"{self.province_th} {self.province_en}"
 
 class Car_Owned(models.Model):
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE, to_field='id')
