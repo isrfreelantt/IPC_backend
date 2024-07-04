@@ -1,4 +1,4 @@
-from .token_manager import TokenManager
+from token_manager import TokenManager
 
 class DataManager:
     @staticmethod
@@ -32,25 +32,10 @@ class DataManager:
             "ซ่อมห้าง": "dealer"
         }
 
-        for spec in package:
-            # Extract coverages from the spec
-            coverages = []
-            for coverage_type, coverage_details in spec["Coverage"].items():
-                coverages.append({
-                    "id": None,  # Placeholder for ID as it's not provided in the spec data
-                    "coverage_type": coverage_type,
-                    "name": coverage_type,  # Adjust as needed; could be more descriptive
-                    "value": coverage_details,
-                    "package": None  # Placeholder for package ID as it's not provided in the spec data
-                })
-            
-            # Map the GarageType value
-            garage_type = spec.get("GarageType")
-            mapped_garage_type = garage_type_mapping.get(garage_type, garage_type)  # Default to original if not in mapping
+        for spec in package:           
 
             transformed_packages.append({
                 "package": {
-                    "id": None,  # Placeholder for Package ID; you can generate or fetch it as needed
                     "package_type": spec["PackageType"],
                     "name": spec["PackageName"],
                     "company": "Chubb",
@@ -78,7 +63,8 @@ class DataManager:
                 "max_sum_insured": spec["Coverage"].get("MaxSumInsure", None),
                 "premium": spec["Premium"].get("PremiumTotal", None),
                 "deduct": spec.get("DeductTPPD", None),
-                "garage": mapped_garage_type
+                "garage": garage_type_mapping.get(spec.get("GarageType"), spec.get("GarageType"))
+
             })
             
         return transformed_packages
