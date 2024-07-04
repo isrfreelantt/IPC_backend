@@ -74,3 +74,34 @@ class TokenManager:
             return response_data
         else:
             raise Exception(f"Failed to get vehicle specs: {response.status_code}, {response.text}")
+        
+    def get_package(self, package_type, voluntary_code, vehicle_key, province):
+            token = self.get_token()
+
+            # Define the endpoint and parameters
+            endpoint = f"{self.domain}{self.base_url}/package/search"
+
+            headers = {
+                "Authorization": f"Bearer {token}",
+                "X-Authorization": os.getenv('X_Authorization'),
+                "Ocp-Apim-Subscription-Key": os.getenv('Ocp_Apim_Subscription_Key'),
+                "apiVersion": os.getenv('API_VERSION')
+            }
+            
+            params = {
+                "PackageType": package_type,
+                "VoluntaryCode": voluntary_code,
+                "VehicleKey": vehicle_key,
+                "LicenseProvinceName":province
+            }
+
+            print()
+            # Make the GET request
+            response = requests.get(endpoint, headers=headers, params=params)
+
+            # Check if the request was successful
+            if response.status_code == 200:
+                response_data = response.json().get("Packages", [])
+                return response_data
+            else:
+                raise Exception(f"Failed to get vehicle specs: {response.status_code}, {response.text}")
