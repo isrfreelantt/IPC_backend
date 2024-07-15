@@ -1,4 +1,4 @@
-from token_manager import TokenManager
+from .token_manager import TokenManager
 
 class DataManager:
     @staticmethod
@@ -10,13 +10,31 @@ class DataManager:
 
         # Select specific fields from vehicle_specs
         selected_fields = []
+        car_type_mapping = {
+            "เก๋ง": "110",
+            "รถตู้": "210",
+            "กระบะ": "320",
+        }
+
         for spec in vehicle_specs:
+            body_type = spec["BodyType"]
+            voluntary_code = None
+
+            # Check for keywords in BodyType to determine the voluntary code
+            for keyword, code in car_type_mapping.items():
+                if keyword in body_type:
+                    voluntary_code = code
+                    break  # Stop checking once a match is found
+
             selected_fields.append({
                 "VehicleKey": spec["VehicleKey"],
                 "ModelSpecDescEN": spec["ModelSpecDescEN"],
+                "BodyType": body_type,
                 "MinSumInsure": spec["MinSumInsure"],
                 "MaxSumInsure": spec["MaxSumInsure"],
+                "VoluntaryCode": voluntary_code  # Include the voluntary code
             })
+
         return selected_fields
     
     def extract_package(self, package_type, voluntary_code, vehicle_key, province):

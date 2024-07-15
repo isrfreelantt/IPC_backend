@@ -55,9 +55,11 @@ class Premium(models.Model):
     deduct = models.CharField(max_length=100)
     garage = models.CharField(max_length=10)
     cars = models.ManyToManyField('Car', through='Premium_Car', related_name='premium')
+    location = models.CharField(max_length=30)
+    cctv = models.FloatField()
 
     def __str__(self):
-        return f"{self.min_sum_insured} {self.max_sum_insured} {self.premium} {self.package} {self.min_age} {self.max_age} {self.deduct} {self.garage}"
+        return f"{self.min_sum_insured} {self.max_sum_insured} {self.premium} {self.package} {self.min_age} {self.max_age} {self.deduct} {self.garage} {self.location} {self.cctv}"
 
 
 class Premium_Car(models.Model):
