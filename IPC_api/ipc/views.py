@@ -146,7 +146,7 @@ class CombinedPremium(generics.ListAPIView):
                 queryset = queryset.filter(min_sum_insured__lte=sum_insured, max_sum_insured__gte=sum_insured)
             except ValueError:
                 pass
-    
+
         if province:
             try:
                 if province == 'กรุงเทพมหานคร':

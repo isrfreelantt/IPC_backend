@@ -86,5 +86,5 @@ class DataManager:
                     "garage": garage_type_mapping.get(spec.get("GarageType"), spec.get("GarageType"))
 
                 })
-            
+
         return transformed_packages
