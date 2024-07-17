@@ -146,20 +146,6 @@ class CombinedPremium(generics.ListAPIView):
                 queryset = queryset.filter(min_sum_insured__lte=sum_insured, max_sum_insured__gte=sum_insured)
             except ValueError:
                 pass
-    
-        if province:
-            try:
-                if province == 'กรุงเทพมหานคร':
-                    area = 'Bangkok Metropolitan Region'
-                else:
-                    area = 'Upcountry'
-                # Apply the area filter
-                area_queryset = queryset.filter(location=area)
-                null_location_queryset = queryset.filter(location__isnull=True)
-                queryset = area_queryset | null_location_queryset
-
-            except ValueError:
-                pass
 
         if model_id:
             premium_queryset = queryset.filter(cars=model_id)
