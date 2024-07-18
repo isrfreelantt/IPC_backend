@@ -88,9 +88,16 @@ class PremiumByCar(generics.ListAPIView):
         model_id = self.request.query_params.get('model_id')
         year = self.request.query_params.get('year')
         sum_insured = self.request.query_params.get('sum_insured')
+        package_type = request.query_params.get('package_type')
 
         # Retrieve Premium objects filtered by the specified model_id
         queryset = Premium.objects.all()
+        
+        if package_type:
+            try:
+                queryset = queryset.filter(package__package_type=package_type)
+            except ValueError:
+                pass
 
         # Filter by age
         if year:
@@ -133,6 +140,12 @@ class CombinedPremium(generics.ListAPIView):
 
         queryset = Premium.objects.all()
 
+        if package_type:
+            try:
+                queryset = queryset.filter(package__package_type=package_type)
+            except ValueError:
+                pass
+
         if year:
             try:
                 age = timezone.now().year - int(year)
@@ -155,7 +168,9 @@ class CombinedPremium(generics.ListAPIView):
                     area = 'Upcountry'
                 # Apply the area filter
                 area_queryset = queryset.filter(location=area)
-                null_location_queryset = queryset.filter(location__isnull=True)
+                # null_location_queryset = queryset.filter(location__isnull=True)
+                null_location_queryset = queryset.filter(location='NaN')
+
                 queryset = area_queryset | null_location_queryset
 
             except ValueError:

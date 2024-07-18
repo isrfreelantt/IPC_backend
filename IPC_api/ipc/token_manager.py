@@ -77,6 +77,13 @@ class TokenManager:
         
     def get_package(self, package_type, voluntary_code, vehicle_key, province):
             token = self.get_token()
+            
+            if package_type == '2':
+                package_type = '5'
+            elif package_type == '3':
+                package_type = '6'
+            else:
+                pass
 
             # Define the endpoint and parameters
             endpoint = f"{self.domain}{self.base_url}/package/search"
