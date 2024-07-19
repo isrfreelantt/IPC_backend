@@ -70,6 +70,7 @@ class DataManager:
                                 ("1. Third party liability", "1.2 Property damage (Baht/Accident)", spec["Coverage"]["AmountTPPDPerAccident"]),
                                 ("2. Own damage coverage", "2.1 Own damage", spec["Coverage"]["AmountODPerAccident"]),
                                 ("2. Own damage coverage", "2.2 Fire and theft", spec["Coverage"]["AmountFT"]),
+                                ("2. Own damage coverage", "2.3 Flood", spec["Coverage"]["AmountFT"]),
                                 ("3. Additional coverage", "3.1 Personal accident (Baht/Person, Sedan:7/ Van:12/ Pickup:5)", spec["Coverage"]["AmountCoverMT01Driver13"]),
                                 ("3. Additional coverage", "3.2 Medical expenses (Baht/Person, Sedan:7/ Van:12/ Pickup:5)", spec["Coverage"]["AmountCoverMT02"]),
                                 ("3. Additional coverage", "3.3 Bail bond (Baht/Accident)", spec["Coverage"]["AmountCoverMT03"])

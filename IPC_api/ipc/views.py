@@ -88,7 +88,7 @@ class PremiumByCar(generics.ListAPIView):
         model_id = self.request.query_params.get('model_id')
         year = self.request.query_params.get('year')
         sum_insured = self.request.query_params.get('sum_insured')
-        package_type = request.query_params.get('package_type')
+        package_type = self.request.query_params.get('package_type')
 
         # Retrieve Premium objects filtered by the specified model_id
         queryset = Premium.objects.all()
@@ -156,7 +156,7 @@ class CombinedPremium(generics.ListAPIView):
         if sum_insured:
             try:
                 sum_insured = int(sum_insured)
-                queryset = queryset.filter(min_sum_insured__lte=sum_insured, max_sum_insured__gte=sum_insured)
+                queryset = queryset.filter(min_sum_insured__gte=sum_insured, max_sum_insured__lte=sum_insured)
             except ValueError:
                 pass
 
