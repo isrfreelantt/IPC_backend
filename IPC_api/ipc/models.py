@@ -2,31 +2,33 @@ from django.db import models
 from phone_field import PhoneField
 
 class Brand(models.Model):
-    brandcode = models.CharField(4)
+    brand_code = models.CharField(4)
     brand = models.CharField(max_length=20)
 
     def __str__(self):
-        return f"{self.brandcode} {self.brand}"
+        return f"{self.brand_code} {self.brand}"
 
 class Car(models.Model):
-    brandcode = models.CharField(4)
-    modelcode = models.CharField(max_length=20)
+    brand_code = models.ForeignKey(Brand, on_delete=models.CASCADE, to_field='brand_code', related_name='models')
+    model_code = models.CharField(max_length=20)
     model = models.CharField(max_length=30)
     min_year = models.IntegerField(null=True)
     max_year = models.IntegerField(null=True)
 
     def __str__(self):
-        return f"{self.brandcode} {self.modelcode} {self.model} {self.min_year} {self.max_year}"
+        return f"{self.brand_code} {self.model_code} {self.model} {self.min_year} {self.max_year}"
 
-class Car_detail(models.Model):
-    model = models.IntegerField()
-    sub_model = models.CharField(max_length=30)
+class Spec(models.Model):
+    vehiclekey = models.CharField(max_length=10)
+    model_code = models.ForeignKey(Car, on_delete=models.CASCADE, to_field='model_code', related_name='model_specs')
+    model_spec = models.CharField()
     year = models.IntegerField()
+    body_type = models.CharField(max_length=20)
     min_sum_insured = models.IntegerField()
     max_sum_insured = models.IntegerField()
 
     def __str__(self):
-        return f"{self.model} {self.sub_model} {self.year} {self.min_sum_insured} {self.max_sum_insured}"
+        return f"{self.vehiclekey} {self.model_code} {self.model_spec} {self.body_type} {self.year} {self.min_sum_insured} {self.max_sum_insured}"
 
 class Package(models.Model):
     package_type = models.CharField(max_length=10)

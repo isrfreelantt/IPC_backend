@@ -13,7 +13,7 @@ class CarSerializer(serializers.ModelSerializer):
 
 class Car_detailSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Car_detail
+        model = Spec
         fields = '__all__'
 
 class CoverageSerializer(serializers.ModelSerializer):

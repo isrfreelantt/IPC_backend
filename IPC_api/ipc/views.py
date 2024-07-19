@@ -17,7 +17,7 @@ class CarList(generics.ListAPIView):
         queryset = Car.objects.all()
 
         if brand:
-            queryset = queryset.filter(brandcode=brand)
+            queryset = queryset.filter(brand_code=brand)
         
         if year:
             queryset = queryset.filter(min_year__lte=year, max_year__gte=year)      
@@ -38,15 +38,36 @@ class CarSpecList(APIView):
         # Ensure all required parameters are provided
         if not brand_code or not model_code or not model_year:
             return Response({"error": "Missing required query parameters"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Filter by brand
+        if brand_code:
+            try:
+                queryset = queryset.filter(brand_code=brand_code)
+            except ValueError:
+                pass
 
-        # Initialize the DataManager
-        data_manager = DataManager()
+        # Filter by year
+        if model_year:
+            try:
+                queryset = queryset.filter(year=model_year)
+            except ValueError:
+                pass  # Handle the case where year is not a valid integer
+        
+        # Filter by model
+        if model_code:
+            try:
+                queryset = queryset.filter(model_code=model_code)
+            except ValueError:
+                pass  # Handle the case where sum_insured is not a valid integer
 
-        try:
-            vehicle_specs = data_manager.extract_car_specs(brand_code, model_code, model_year)
-            return Response(vehicle_specs, status=status.HTTP_200_OK)
-        except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        # # Initialize the DataManager
+        # data_manager = DataManager()
+
+        # try:
+        #     vehicle_specs = data_manager.extract_car_specs(brand_code, model_code, model_year)
+        #     return Response(vehicle_specs, status=status.HTTP_200_OK)
+        # except Exception as e:
+        #     return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class PackageList(generics.ListAPIView):
     serializer_class = PackageSerializer
