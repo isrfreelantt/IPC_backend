@@ -55,14 +55,25 @@ class CarSpecList(generics.ListAPIView):
         
         return queryset
 
-        # # Initialize the DataManager
-        # data_manager = DataManager()
+class ChubbSpecList(APIView):
+    def get(self, request):
+        # Extract query parameters
+        brand_code = request.query_params.get('brand')
+        model_code = request.query_params.get('model')
+        model_year = request.query_params.get('year')
 
-        # try:
-        #     vehicle_specs = data_manager.extract_car_specs(brand_code, model_code, model_year)
-        #     return Response(vehicle_specs, status=status.HTTP_200_OK)
-        # except Exception as e:
-        #     return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        # Ensure all required parameters are provided
+        if not brand_code or not model_code or not model_year:
+            return Response({"error": "Missing required query parameters"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Initialize the DataManager
+        data_manager = DataManager()
+
+        try:
+            vehicle_specs = data_manager.extract_car_specs(brand_code, model_code, model_year)
+            return Response(vehicle_specs, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class PackageList(generics.ListAPIView):
     serializer_class = PackageSerializer
@@ -104,14 +115,15 @@ class PremiumByCar(generics.ListAPIView):
         model_id = self.request.query_params.get('model_id')
         year = self.request.query_params.get('year')
         sum_insured = self.request.query_params.get('sum_insured')
-        package_type = self.request.query_params.get('package_type')
+        province = self.request.query_params.get('province')
+        insurance_type = self.request.query_params.get('insurance_type')
 
         # Retrieve Premium objects filtered by the specified model_id
         queryset = Premium.objects.all()
         
-        if package_type:
+        if insurance_type:
             try:
-                queryset = queryset.filter(package__package_type=package_type)
+                queryset = queryset.filter(insurance_type='insurance_type')
             except ValueError:
                 pass
 
@@ -131,11 +143,27 @@ class PremiumByCar(generics.ListAPIView):
                 queryset = queryset.filter(min_sum_insured__lte=sum_insured, max_sum_insured__gte=sum_insured)
             except ValueError:
                 pass
+        
+        if province:
+            try:
+                if province == 'กรุงเทพมหานคร':
+                    area = 'Bangkok Metropolitan Region'
+                else:
+                    area = 'Upcountry'
+                # Apply the area filter
+                area_queryset = queryset.filter(location=area)
 
+                # null_location_queryset = queryset.filter(location__isnull=True)
+                null_location_queryset = queryset.filter(location='')
+
+                queryset = area_queryset | null_location_queryset
+
+            except ValueError:
+                pass
+    
         # Filter by model_id
         if model_id:
             premium_queryset = queryset.filter(cars=model_id)
-            print(premium_queryset)
 
             return premium_queryset
         else:
@@ -149,16 +177,16 @@ class CombinedPremium(generics.ListAPIView):
         model_id = request.query_params.get('model_id')
         year = request.query_params.get('year')
         sum_insured = request.query_params.get('sum_insured')
-        package_type = request.query_params.get('package_type')
+        insurance_type = request.query_params.get('insurance_type')
         voluntary_code = request.query_params.get('voluntary_code')
         vehicle_key = request.query_params.get('vehicle_key')
         province = request.query_params.get('province')
 
         queryset = Premium.objects.all()
 
-        if package_type:
+        if insurance_type:
             try:
-                queryset = queryset.filter(package__package_type=package_type)
+                queryset = queryset.filter(insurance_type='insurance_type')
             except ValueError:
                 pass
 
@@ -179,13 +207,14 @@ class CombinedPremium(generics.ListAPIView):
         if province:
             try:
                 if province == 'กรุงเทพมหานคร':
-                    area = 'Bangkok Metropolitan Region'
+                    area = 'Bangkok'
                 else:
                     area = 'Upcountry'
                 # Apply the area filter
                 area_queryset = queryset.filter(location=area)
+
                 # null_location_queryset = queryset.filter(location__isnull=True)
-                null_location_queryset = queryset.filter(location='NaN')
+                null_location_queryset = queryset.filter(location='')
 
                 queryset = area_queryset | null_location_queryset
 
@@ -199,7 +228,7 @@ class CombinedPremium(generics.ListAPIView):
             
             # Fetch the package data
             try:
-                extracted_package = data_manager.extract_package(package_type, voluntary_code, vehicle_key, province)
+                extracted_package = data_manager.extract_package(insurance_type, voluntary_code, vehicle_key, province)
             except Exception as e:
                 return Response({"error": str(e)}, status=500)
 

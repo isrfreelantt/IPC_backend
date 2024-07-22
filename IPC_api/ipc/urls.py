@@ -5,6 +5,7 @@ urlpatterns = [
     path('cars/', views.CarList.as_view(), name='car-list'),
     path('brands/', views.BrandList.as_view(), name='brand'),
     path('car-details/', views.CarSpecList.as_view(), name='car-detail-list'),
+    path('chubb-car-details/', views.ChubbSpecList.as_view(), name='car-detail-list'),
     path('packages/', views.PackageList.as_view(), name='campaign-list'),
     path('coverage/', views.CoverageList.as_view(), name='coverage-list'),
     path('premiums_woAPI/', views.PremiumByCar.as_view(), name='premium-by-car'),
