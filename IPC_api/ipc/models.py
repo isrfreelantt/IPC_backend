@@ -9,7 +9,7 @@ class Brand(models.Model):
         return f"{self.brand_code} {self.brand}"
 
 class Car(models.Model):
-    brand_code = models.ForeignKey(Brand, on_delete=models.CASCADE, to_field='brand_code', related_name='models')
+    brand_code = models.CharField(4)
     model_code = models.CharField(max_length=20)
     model = models.CharField(max_length=30)
     min_year = models.IntegerField(null=True)
@@ -19,9 +19,9 @@ class Car(models.Model):
         return f"{self.brand_code} {self.model_code} {self.model} {self.min_year} {self.max_year}"
 
 class Spec(models.Model):
-    vehiclekey = models.CharField(max_length=10)
-    model_code = models.ForeignKey(Car, on_delete=models.CASCADE, to_field='model_code', related_name='model_specs')
-    model_spec = models.CharField()
+    vehicle_key = models.CharField(max_length=10)
+    model_code = models.CharField(max_length=30)
+    model_spec = models.CharField(max_length=100)
     year = models.IntegerField()
     body_type = models.CharField(max_length=20)
     min_sum_insured = models.IntegerField()

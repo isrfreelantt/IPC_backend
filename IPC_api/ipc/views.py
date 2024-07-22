@@ -10,11 +10,14 @@ class CarList(generics.ListAPIView):
     serializer_class = CarSerializer
 
     def get_queryset(self):
-        queryset = Car.objects.all()
         brand = self.request.query_params.get('brand')
         year = self.request.query_params.get('year')
 
         queryset = Car.objects.all()
+
+        # Ensure all required parameters are provided
+        if not brand or not year:
+            return Response({"error": "Missing required query parameters"}, status=status.HTTP_400_BAD_REQUEST)
 
         if brand:
             queryset = queryset.filter(brand_code=brand)
@@ -28,37 +31,29 @@ class BrandList(generics.ListAPIView):
     queryset = Brand.objects.all()
     serializer_class = BrandSerializer
     
-class CarSpecList(APIView):
-    def get(self, request):
+class CarSpecList(generics.ListAPIView):
+    serializer_class = Car_detailSerializer
+
+    def get_queryset(self):
+        queryset = Spec.objects.all()
+
         # Extract query parameters
-        brand_code = request.query_params.get('brand')
-        model_code = request.query_params.get('model')
-        model_year = request.query_params.get('year')
+        model_code = self.request.query_params.get('model')
+        model_year = self.request.query_params.get('year')
 
         # Ensure all required parameters are provided
-        if not brand_code or not model_code or not model_year:
+        if not model_code or not model_year:
             return Response({"error": "Missing required query parameters"}, status=status.HTTP_400_BAD_REQUEST)
-        
-        # Filter by brand
-        if brand_code:
-            try:
-                queryset = queryset.filter(brand_code=brand_code)
-            except ValueError:
-                pass
 
         # Filter by year
         if model_year:
-            try:
-                queryset = queryset.filter(year=model_year)
-            except ValueError:
-                pass  # Handle the case where year is not a valid integer
+            queryset = queryset.filter(year=model_year)
         
         # Filter by model
         if model_code:
-            try:
-                queryset = queryset.filter(model_code=model_code)
-            except ValueError:
-                pass  # Handle the case where sum_insured is not a valid integer
+            queryset = queryset.filter(model_code=model_code)
+        
+        return queryset
 
         # # Initialize the DataManager
         # data_manager = DataManager()
@@ -127,7 +122,7 @@ class PremiumByCar(generics.ListAPIView):
                 age = timezone.now().year - int(year)
                 queryset = queryset.filter(min_age__lte=age, max_age__gte=age)
             except ValueError:
-                pass  # Handle the case where year is not a valid integer
+                pass
         
         # Filter by sum insured
         if sum_insured:
@@ -135,7 +130,7 @@ class PremiumByCar(generics.ListAPIView):
                 sum_insured = int(sum_insured)
                 queryset = queryset.filter(min_sum_insured__lte=sum_insured, max_sum_insured__gte=sum_insured)
             except ValueError:
-                pass  # Handle the case where sum_insured is not a valid integer
+                pass
 
         # Filter by model_id
         if model_id:
@@ -150,7 +145,7 @@ class PremiumByCar(generics.ListAPIView):
 class CombinedPremium(generics.ListAPIView):
     serializer_class = PremiumSerializer
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request):
         model_id = request.query_params.get('model_id')
         year = request.query_params.get('year')
         sum_insured = request.query_params.get('sum_insured')
