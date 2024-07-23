@@ -58,7 +58,7 @@ class Premium(models.Model):
     garage = models.CharField(max_length=10)
     cars = models.ManyToManyField('Car', through='Premium_Car', related_name='premium')
     location = models.CharField(max_length=30)
-    insurance_type = models.SmallIntegerField
+    insurance_type = models.SmallIntegerField()
     cctv = models.FloatField()
 
     def __str__(self):

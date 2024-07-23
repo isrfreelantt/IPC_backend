@@ -123,7 +123,7 @@ class PremiumByCar(generics.ListAPIView):
         
         if insurance_type:
             try:
-                queryset = queryset.filter(insurance_type='insurance_type')
+                queryset = queryset.filter(insurance_type=insurance_type)
             except ValueError:
                 pass
 
@@ -186,7 +186,7 @@ class CombinedPremium(generics.ListAPIView):
 
         if insurance_type:
             try:
-                queryset = queryset.filter(insurance_type='insurance_type')
+                queryset = queryset.filter(insurance_type=insurance_type)
             except ValueError:
                 pass
 
