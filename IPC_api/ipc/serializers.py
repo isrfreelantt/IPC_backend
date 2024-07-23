@@ -33,7 +33,7 @@ class PremiumSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Premium
-        fields = ['package', 'min_sum_insured', 'max_sum_insured', 'premium', 'deduct', 'garage']
+        fields = ['package', 'min_sum_insured', 'max_sum_insured', 'premium', 'deduct', 'garage', 'insurance_type']
 
 class CarOwnedSerializer(serializers.ModelSerializer):
     class Meta:
