@@ -200,7 +200,7 @@ class CombinedPremium(generics.ListAPIView):
         if sum_insured:
             try:
                 sum_insured = int(sum_insured)
-                queryset = queryset.filter(min_sum_insured__lte=sum_insured, max_sum_insured__gte=sum_insured)
+                queryset = queryset.filter(max_sum_insured__gte=sum_insured)
             except ValueError:
                 pass
 
