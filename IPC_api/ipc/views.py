@@ -200,7 +200,8 @@ class CombinedPremium(generics.ListAPIView):
         if sum_insured:
             try:
                 sum_insured = int(sum_insured)
-                queryset = queryset.filter(min_sum_insured__lte=sum_insured)
+                # Min less than or equal to Sum insured and Max greater than or equal to 90% Sum insured
+                queryset = queryset.filter(min_sum_insured__lte=sum_insured, max_sum_insured__gte=sum_insured*9/10)
             except ValueError:
                 pass
 
