@@ -81,7 +81,8 @@ class DataManager:
                 },
                 "min_sum_insured": spec["Coverage"].get("MinSumInsure", None),
                 "max_sum_insured": spec["Coverage"].get("MaxSumInsure", None),
-                "premium": spec["Premium"].get("PremiumTotal", None),
+                "premium": spec["Premium"].get("PremiumGross", None),
+                "premium_total": spec["Premium"].get("PremiumTotal", None),
                 "deduct": spec.get("DeductTPPD", None),
                 "garage": garage_type_mapping.get(spec.get("GarageType"), spec.get("GarageType"))
 
