@@ -65,7 +65,6 @@ class Premium(models.Model):
     def __str__(self):
         return f"{self.min_sum_insured} {self.max_sum_insured} {self.premium} {self.premium_total} {self.package} {self.min_age} {self.max_age} {self.deduct} {self.garage} {self.location} {self.insurance_type} {self.cctv}"
 
-
 class Premium_Car(models.Model):
     model = models.ForeignKey(Car, on_delete=models.CASCADE, to_field='id')
     premium = models.ForeignKey(Premium, on_delete=models.CASCADE, to_field='id')
