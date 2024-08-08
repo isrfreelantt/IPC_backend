@@ -232,7 +232,7 @@ class CombinedPremium(generics.ListAPIView):
             try:
                 extracted_package = data_manager.extract_package(insurance_type, voluntary_code, vehicle_key, province)
             except Exception as e:
-                return Response({"error": str(e)}, status=500)
+                extracted_package = []
 
             # Serialize premium data
             premium_data = PremiumSerializer(premium_queryset, many=True).data
