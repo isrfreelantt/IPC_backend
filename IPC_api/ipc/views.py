@@ -206,12 +206,7 @@ class CombinedPremium(generics.ListAPIView):
             except ValueError:
                 pass
 
-        if voluntary_code:
-            try:
-                # Filter where voluntary_code matches the provided value or is 0
-                queryset = queryset.filter(Q(voluntary_code=voluntary_code) | Q(voluntary_code=0))
-            except ValueError:
-                pass
+        
 
         if province:
             try:
