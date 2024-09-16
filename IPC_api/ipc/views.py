@@ -5,6 +5,7 @@ from django.utils import timezone
 from .models import *
 from .serializers import *
 from .data_manager import DataManager
+from django.db.models import Q
 
 class CarList(generics.ListAPIView):
     serializer_class = CarSerializer
@@ -202,6 +203,13 @@ class CombinedPremium(generics.ListAPIView):
                 sum_insured = int(sum_insured)
                 # Min less than or equal to Sum insured and Max greater than or equal to 90% Sum insured
                 queryset = queryset.filter(min_sum_insured__lte=sum_insured, max_sum_insured__gte=sum_insured*9/10, max_sum_insured__lte=sum_insured*11/10)
+            except ValueError:
+                pass
+
+        if voluntary_code:
+            try:
+                # Filter where voluntary_code matches the provided value or is 0
+                queryset = queryset.filter(Q(voluntary_code=voluntary_code) | Q(voluntary_code=0))
             except ValueError:
                 pass
 
